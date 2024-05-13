@@ -9,6 +9,10 @@ from tokenizers import Tokenizer
 # Regular expression matching whitespace:
 from unidecode import unidecode
 
+# from german_transliterate.core import GermanTransliterate
+from indic_transliteration import sanscript
+
+
 _whitespace_re = re.compile(r'\s+')
 
 
@@ -141,14 +145,16 @@ def transliteration_cleaners(text):
 
 def english_cleaners(text):
   '''Pipeline for English text, including number and abbreviation expansion.'''
-  text = convert_to_ascii(text)
-  text = lowercase(text)
-  text = expand_numbers(text)
-  text = expand_abbreviations(text)
+
+  '''Transliterate Hindi text to Roman script.'''
+  # Specify the input and output scripts
+  input_script = sanscript.DEVANAGARI
+  output_script = sanscript.ITRANS
+  # Transliterate the text
+  text = sanscript.transliterate(text, input_script, output_script)
   text = collapse_whitespace(text)
   text = text.replace('"', '')
   return text
-
 
 def lev_distance(s1, s2):
   if len(s1) > len(s2):
@@ -166,7 +172,7 @@ def lev_distance(s1, s2):
   return distances[-1]
 
 
-DEFAULT_VOCAB_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/tokenizer.json')
+DEFAULT_VOCAB_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/custom_language_tokenizer.json')
 
 
 class VoiceBpeTokenizer:
