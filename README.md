@@ -14,7 +14,7 @@ A live demo is hosted on Hugging Face Spaces. If you'd like to avoid a queue, pl
 
 https://huggingface.co/spaces/Manmay/tortoise-tts
 
-## Install via pip
+## Install via pi
 ```bash
 pip install tortoise-tts
 ```
